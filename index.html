@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduConnect - Ruang Pembelajaran Digital</title>
+  <style>
+    :root {
+      --navy: #17345f;
+      --blue: #2867b2;
+      --light-blue: #eaf2ff;
+      --pale: #f5f8ff;
+      --text: #1d2b45;
+      --muted: #64748b;
+      --white: #ffffff;
+      --border: #dce6f5;
+      --green: #16845b;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--pale);
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .brand {
+      color: var(--navy);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+    .brand span { color: var(--blue); }
+    .nav { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 9px;
+    }
+    .nav button:hover { background: var(--light-blue); }
+    .container { width: min(1050px, 90%); margin: 35px auto; }
+    .hero {
+      background: linear-gradient(120deg, #fff 15%, #e5efff 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 55px 35px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(23,52,95,.06);
+    }
+    .eyebrow {
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    h1 { color: var(--navy); font-size: clamp(30px, 5vw, 48px); margin: 12px 0; }
+    h2 { color: var(--navy); margin-top: 0; }
+    .hero p { color: var(--muted); line-height: 1.7; max-width: 620px; margin: 0 auto; }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 700px;
+      margin: 32px auto 0;
+    }
+    .role-card {
+      text-align: left;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 23px;
+      transition: .2s;
+    }
+    .role-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(23,52,95,.10); }
+    .role-icon { font-size: 32px; }
+    .role-card h3 { color: var(--navy); margin: 12px 0 7px; }
+    .role-card p { font-size: 14px; margin: 0 0 17px; }
+    .primary, .secondary, .danger {
+      border: 0; border-radius: 10px; padding: 11px 16px; font-weight: 700;
+    }
+    .primary { background: var(--blue); color: white; }
+    .primary:hover { background: var(--navy); }
+    .secondary { background: var(--light-blue); color: var(--navy); }
+    .danger { background: #fff0f0; color: #a52c2c; }
+    .page-title { margin-bottom: 8px; }
+    .subtitle { color: var(--muted); margin-top: 0; line-height: 1.6; }
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    .sidebar {
+      background: var(--navy);
+      color: white;
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .sidebar h3 { margin: 0 0 15px; }
+    .sidebar button {
+      display: block; width: 100%; text-align: left;
+      border: 0; border-radius: 9px; padding: 12px;
+      margin: 5px 0; background: transparent; color: white;
+    }
+    .sidebar button:hover, .sidebar button.active { background: #2d5f9d; }
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 7px 22px rgba(23,52,95,.04);
+    }
+    .panel + .panel { margin-top: 18px; }
+    .form-group { margin: 15px 0; }
+    label { display: block; font-weight: 700; margin-bottom: 7px; font-size: 14px; }
+    input, textarea {
+      width: 100%; border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px; outline: none; background: #fbfdff;
+    }
+    input:focus, textarea:focus { border-color: var(--blue); }
+    textarea { min-height: 120px; resize: vertical; }
+    .material {
+      border: 1px solid var(--border); border-radius: 13px;
+      padding: 17px; margin-top: 13px; background: #fff;
+    }
+    .material h3 { color: var(--navy); margin: 0 0 7px; }
+    .material p { color: var(--muted); line-height: 1.6; white-space: pre-wrap; }
+    .material small { color: var(--muted); }
+    .material-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .question {
+      border: 1px solid var(--border); border-radius: 13px;
+      padding: 17px; margin: 15px 0;
+    }
+    .option { display: block; padding: 9px 10px; border-radius: 8px; margin-top: 5px; }
+    .option:hover { background: var(--pale); }
+    .option input { width: auto; margin-right: 8px; }
+    .notice {
+      background: #effaf5; border: 1px solid #c8eadb; color: #176044;
+      padding: 13px; border-radius: 10px; margin: 15px 0;
+    }
+    .empty {
+      border: 1px dashed #b9cbe3; border-radius: 12px;
+      padding: 25px; text-align: center; color: var(--muted);
+    }
+    .hidden { display: none !important; }
+    footer { text-align: center; color: var(--muted); padding: 25px 10px; font-size: 13px; }
+    @media (max-width: 700px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .role-grid { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: flex; flex-wrap: wrap; gap: 5px; }
+      .sidebar h3 { width: 100%; }
+      .sidebar button { width: auto; flex: 1; text-align: center; }
+      .hero { padding: 38px 20px; }
+      .panel { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">◆ Edu<span>Connect</span></div>
+    <nav class="nav">
+      <button onclick="showHome()">Beranda</button>
+      <button onclick="showAbout()">Tentang</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- HALAMAN BERANDA -->
+    <section id="homePage">
+      <div class="hero">
+        <div class="eyebrow">Ruang Pembelajaran Digital</div>
+        <h1>Selamat Datang di EduConnect</h1>
+        <p>Media pembelajaran digital yang membantu dosen membagikan materi dan mahasiswa belajar dengan lebih mudah.</p>
+        <div class="role-grid">
+          <div class="role-card">
+            <div class="role-icon">👨‍🏫</div>
+            <h3>Dosen</h3>
+            <p>Tambahkan dan kelola materi pembelajaran untuk mahasiswa.</p>
+            <button class="primary" onclick="openLecturer()">Masuk sebagai Dosen →</button>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">🎓</div>
+            <h3>Mahasiswa</h3>
+            <p>Baca materi pembelajaran dan kerjakan kuis literasi digital.</p>
+            <button class="primary" onclick="openStudent()">Masuk sebagai Mahasiswa →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HALAMAN TENTANG -->
+    <section id="aboutPage" class="panel hidden">
+      <h2>Tentang EduConnect</h2>
+      <p class="subtitle">EduConnect merupakan rancangan media pembelajaran digital untuk mendukung kegiatan belajar di pendidikan tinggi.</p>
+      <p><b>Tujuan:</b> mempermudah dosen membagikan materi dan membantu mahasiswa mengakses materi serta menguji pemahamannya.</p>
+      <button class="secondary" onclick="showHome()">← Kembali ke Beranda</button>
+    </section>
+
+    <!-- HALAMAN DOSEN -->
+    <section id="lecturerPage" class="hidden">
+      <h2 class="page-title">Dashboard Dosen</h2>
+      <p class="subtitle">Kelola dan bagikan materi pembelajaran kepada mahasiswa.</p>
+      <div class="layout">
+        <aside class="sidebar">
+          <h3>Menu Dosen</h3>
+          <button class="active" onclick="showLecturerSection('lecturerDashboard', this)">⌂ Dashboard</button>
+          <button onclick="showLecturerSection('addMaterialSection', this)">＋ Tambah Materi</button>
+          <button onclick="showLecturerSection('lecturerMaterialsSection', this); renderLecturerMaterials()">☷ Daftar Materi</button>
+          <button onclick="showHome()">↩ Beranda</button>
+        </aside>
+        <div>
+          <div id="lecturerDashboard" class="panel">
+            <h2>Halo, Dosen!</h2>
+            <p class="subtitle">Selamat datang di ruang pengelolaan materi EduConnect.</p>
+            <div class="notice">Gunakan menu <b>Tambah Materi</b> untuk membagikan materi pembelajaran.</div>
+            <button class="primary" onclick="showLecturerSection('addMaterialSection', document.querySelectorAll('#lecturerPage .sidebar button')[1])">＋ Tambah Materi Baru</button>
+            <p id="lecturerCount" class="subtitle"></p>
+          </div>
+
+          <div id="addMaterialSection" class="panel hidden">
+            <h2>Tambah Materi</h2>
+            <p class="subtitle">Isi informasi materi yang ingin dibagikan.</p>
+            <form id="materialForm">
+              <div class="form-group">
+                <label for="materialTitle">Judul Materi</label>
+                <input id="materialTitle" type="text" placeholder="Contoh: Pengenalan Literasi Digital" required>
+              </div>
+              <div class="form-group">
+                <label for="materialDescription">Deskripsi Singkat</label>
+                <input id="materialDescription" type="text" placeholder="Tuliskan ringkasan materi" required>
+              </div>
+              <div class="form-group">
+                <label for="materialContent">Isi Materi</label>
+                <textarea id="materialContent" placeholder="Tuliskan isi materi di sini..." required></textarea>
+              </div>
+              <button class="primary" type="submit">Simpan Materi</button>
+              <button class="secondary" type="button" onclick="showLecturerSection('lecturerDashboard')">Batal</button>
+            </form>
+            <div id="saveMessage" aria-live="polite"></div>
+          </div>
+
+          <div id="lecturerMaterialsSection" class="panel hidden">
+            <h2>Daftar Materi</h2>
+            <p class="subtitle">Materi yang sudah ditambahkan.</p>
+            <div id="lecturerMaterialsList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HALAMAN MAHASISWA -->
+    <section id="studentPage" class="hidden">
+      <h2 class="page-title">Dashboard Mahasiswa</h2>
+      <p class="subtitle">Selamat belajar! Pilih materi untuk dibaca atau kerjakan kuis untuk menguji pemahamanmu.</p>
+      <div class="layout">
+        <aside class="sidebar">
+          <h3>Menu Mahasiswa</h3>
+          <button class="active" onclick="showStudentSection('studentMaterialsSection', this)">▤ Materi</button>
+          <button onclick="showStudentSection('quizSection', this)">☑ Kuis</button>
+          <button onclick="showHome()">↩ Beranda</button>
+        </aside>
+        <div>
+          <div id="studentMaterialsSection" class="panel">
+            <h2>Materi Pembelajaran</h2>
+            <p class="subtitle">Pilih materi yang ingin kamu pelajari.</p>
+            <div id="studentMaterialsList"></div>
+            <button class="secondary" onclick="showHome()">← Kembali ke Beranda</button>
+          </div>
+
+          <div id="readMaterialSection" class="panel hidden">
+            <h2 id="readTitle">Judul Materi</h2>
+            <p id="readDescription" class="subtitle"></p>
+            <div id="readContent" style="line-height:1.8; white-space:pre-wrap"></div>
+            <br>
+            <button class="secondary" onclick="showStudentSection('studentMaterialsSection')">← Kembali ke Daftar Materi</button>
+          </div>
+
+          <div id="quizSection" class="panel hidden">
+            <h2>Kuis Literasi Digital</h2>
+            <p class="subtitle">Pilih satu jawaban yang paling tepat untuk setiap pertanyaan.</p>
+            <form id="quizForm">
+              <div class="question">
+                <b>1. Apa yang dimaksud dengan literasi digital?</b>
+                <label class="option"><input type="radio" name="q1" value="a"> Kemampuan menggunakan teknologi digital secara bijak</label>
+                <label class="option"><input type="radio" name="q1" value="b"> Kemampuan mengetik dengan cepat</label>
+                <label class="option"><input type="radio" name="q1" value="c"> Kemampuan bermain gim</label>
+              </div>
+              <div class="question">
+                <b>2. Apa yang sebaiknya dilakukan sebelum membagikan informasi?</b>
+                <label class="option"><input type="radio" name="q2" value="a"> Langsung menyebarkannya</label>
+                <label class="option"><input type="radio" name="q2" value="b"> Memeriksa kebenaran sumber informasi</label>
+                <label class="option"><input type="radio" name="q2" value="c"> Mengubah isi informasinya</label>
+              </div>
+              <div class="question">
+                <b>3. Mengapa kita perlu menjaga kata sandi?</b>
+                <label class="option"><input type="radio" name="q3" value="a"> Agar mudah diketahui orang lain</label>
+                <label class="option"><input type="radio" name="q3" value="b"> Agar bisa dibagikan ke semua teman</label>
+                <label class="option"><input type="radio" name="q3" value="c"> Untuk melindungi akun dan data pribadi</label>
+              </div>
+              <button class="primary" type="submit">Kirim Jawaban</button>
+            </form>
+            <div id="quizResult" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>EduConnect · Media Pembelajaran Digital untuk Dosen dan Mahasiswa</footer>
+
+  <script>
+    // Mengambil materi yang tersimpan di browser.
+    // Jika belum ada materi, gunakan daftar kosong.
+    let materials = JSON.parse(localStorage.getItem("educonnectMaterials") || "[]");
+
+    const pages = ["homePage", "aboutPage", "lecturerPage", "studentPage"];
+
+    function showPage(pageId) {
+      pages.forEach(id => document.getElementById(id).classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showHome() {
+      showPage("homePage");
+    }
+
+    function showAbout() {
+      showPage("aboutPage");
+    }
+
+    function openLecturer() {
+      showPage("lecturerPage");
+      showLecturerSection("lecturerDashboard");
+      updateLecturerCount();
+    }
+
+    function openStudent() {
+      showPage("studentPage");
+      showStudentSection("studentMaterialsSection");
+      renderStudentMaterials();
+    }
+
+    function showLecturerSection(sectionId, button) {
+      ["lecturerDashboard", "addMaterialSection", "lecturerMaterialsSection"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+      document.getElementById(sectionId).classList.remove("hidden");
+
+      document.querySelectorAll("#lecturerPage .sidebar button").forEach(btn => btn.classList.remove("active"));
+      if (button) button.classList.add("active");
+      updateLecturerCount();
+    }
+
+    function showStudentSection(sectionId, button) {
+      ["studentMaterialsSection", "readMaterialSection", "quizSection"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+      document.getElementById(sectionId).classList.remove("hidden");
+
+      document.querySelectorAll("#studentPage .sidebar button").forEach(btn => btn.classList.remove("active"));
+      if (button) button.classList.add("active");
+
+      if (sectionId === "studentMaterialsSection") renderStudentMaterials();
+    }
+
+    // Menyimpan materi baru dari formulir dosen.
+    document.getElementById("materialForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const newMaterial = {
+        id: Date.now(),
+        title: document.getElementById("materialTitle").value.trim(),
+        description: document.getElementById("materialDescription").value.trim(),
+        content: document.getElementById("materialContent").value.trim()
+      };
+
+      materials.push(newMaterial);
+      localStorage.setItem("educonnectMaterials", JSON.stringify(materials));
+
+      this.reset();
+      document.getElementById("saveMessage").innerHTML =
+        '<div class="notice">Materi berhasil disimpan dan dapat dilihat pada halaman mahasiswa di browser ini.</div>';
+
+      updateLecturerCount();
+      renderLecturerMaterials();
+    });
+
+    function updateLecturerCount() {
+      document.getElementById("lecturerCount").textContent =
+        "Jumlah materi yang tersimpan: " + materials.length;
+    }
+
+    function renderLecturerMaterials() {
+      const list = document.getElementById("lecturerMaterialsList");
+      if (materials.length === 0) {
+        list.innerHTML = '<div class="empty">Belum ada materi. Silakan tambahkan materi terlebih dahulu.</div>';
+        return;
+      }
+
+      list.innerHTML = materials.map(item => `
+        <article class="material">
+          <h3>${escapeHTML(item.title)}</h3>
+          <small>${escapeHTML(item.description)}</small>
+          <div class="material-actions">
+            <button class="danger" onclick="deleteMaterial(${item.id})">Hapus</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderStudentMaterials() {
+      const list = document.getElementById("studentMaterialsList");
+      if (materials.length === 0) {
+        list.innerHTML = '<div class="empty">Belum ada materi dari dosen. Silakan kembali setelah dosen menambahkan materi.</div>';
+        return;
+      }
+
+      list.innerHTML = materials.map(item => `
+        <article class="material">
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.description)}</p>
+          <button class="primary" onclick="readMaterial(${item.id})">Baca Materi →</button>
+        </article>
+      `).join("");
+    }
+
+    function readMaterial(id) {
+      const item = materials.find(material => material.id === id);
+      if (!item) return;
+
+      document.getElementById("readTitle").textContent = item.title;
+      document.getElementById("readDescription").textContent = item.description;
+      document.getElementById("readContent").textContent = item.content;
+      showStudentSection("readMaterialSection");
+    }
+
+    function deleteMaterial(id) {
+      if (!confirm("Yakin ingin menghapus materi ini?")) return;
+      materials = materials.filter(item => item.id !== id);
+      localStorage.setItem("educonnectMaterials", JSON.stringify(materials));
+      renderLecturerMaterials();
+      renderStudentMaterials();
+      updateLecturerCount();
+    }
+
+    // Mencegah teks yang diketik pengguna dibaca sebagai kode HTML.
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[character]);
+    }
+
+    // Memeriksa jawaban kuis dan menghitung nilai.
+    document.getElementById("quizForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const correctAnswers = { q1: "a", q2: "b", q3: "c" };
+      const formData = new FormData(this);
+      let score = 0;
+
+      Object.keys(correctAnswers).forEach(question => {
+        if (formData.get(question) === correctAnswers[question]) score++;
+      });
+
+      const finalScore = Math.round((score / 3) * 100);
+      document.getElementById("quizResult").innerHTML =
+        `<div class="notice"><b>Kuis selesai!</b><br>Jawaban benar: ${score} dari 3 soal.<br>Nilai kamu: <b>${finalScore}</b></div>`;
+    });
+
+    // Menampilkan jumlah materi ketika halaman pertama kali dibuka.
+    updateLecturerCount();
+  </script>
+</body>
+</html>
